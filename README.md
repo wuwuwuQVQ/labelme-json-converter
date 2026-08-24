@@ -1,7 +1,7 @@
 # Labelme JSON Converter
 
-[![CI](https://github.com/sos-is-really-helpless/labelme-json-converter/actions/workflows/ci.yml/badge.svg)](https://github.com/sos-is-really-helpless/labelme-json-converter/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/sos-is-really-helpless/labelme-json-converter)](https://github.com/sos-is-really-helpless/labelme-json-converter/releases)
+[![CI](https://github.com/wuwuwuQVQ/labelme-json-converter/actions/workflows/ci.yml/badge.svg)](https://github.com/wuwuwuQVQ/labelme-json-converter/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/wuwuwuQVQ/labelme-json-converter)](https://github.com/wuwuwuQVQ/labelme-json-converter/releases)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -21,7 +21,7 @@
 
 ## 下载
 
-从 [Releases](https://github.com/sos-is-really-helpless/labelme-json-converter/releases/latest) 下载与电脑匹配的 ZIP：
+从 [Releases](https://github.com/wuwuwuQVQ/labelme-json-converter/releases/latest) 下载与电脑匹配的 ZIP：
 
 | 系统 | 下载文件 | 支持范围 |
 |---|---|---|
@@ -109,4 +109,3 @@ python -m pip install . -r requirements-build.txt
 ## 许可证
 
 [MIT License](LICENSE)
-

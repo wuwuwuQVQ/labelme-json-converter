@@ -31,7 +31,7 @@ body:
     id: version
     attributes:
       label: 程序版本
-      placeholder: 1.0.0
+      placeholder: 1.0.1
     validations:
       required: true
   - type: textarea
@@ -46,4 +46,3 @@ body:
     attributes:
       label: 已脱敏的转换报告或错误信息
       description: 请删除路径中的姓名、机构名及其他敏感信息；不要附加原始 JSON 或图片。
-

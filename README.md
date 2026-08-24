@@ -98,7 +98,7 @@ python -m pip install . -r requirements-build.txt
 
 1. 更新 `pyproject.toml`、`src/labelme_json_converter/__init__.py` 和 `CHANGELOG.md` 中的版本。
 2. 确认 `main` 分支 CI 全部通过。
-3. 创建标签，例如 `git tag v1.0.0 && git push origin v1.0.0`。
+3. 创建标签，例如 `git tag v1.0.1 && git push origin v1.0.1`。
 4. Actions 自动构建四个平台、生成 SHA-256 并创建草稿 Release。
 5. 按 [`docs/release-checklist.md`](docs/release-checklist.md) 在真实系统验收后发布草稿。
 

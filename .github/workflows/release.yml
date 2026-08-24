@@ -19,10 +19,10 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           architecture: x64
           cache: pip
       - name: Install project and build dependencies
@@ -32,7 +32,7 @@ jobs:
       - name: Build and validate packaged EXE
         shell: pwsh
         run: ./scripts/build_windows.ps1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows-x86_64
           path: dist-release/Labelme-JSON-Converter-Windows-x86_64.zip
@@ -44,10 +44,10 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           architecture: arm64
           cache: pip
       - name: Install project and build dependencies
@@ -56,7 +56,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Build and validate packaged app
         run: bash scripts/build_macos.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: macos-arm64
           path: dist-release/Labelme-JSON-Converter-macOS-arm64.zip
@@ -68,10 +68,10 @@ jobs:
     runs-on: macos-15-intel
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           architecture: x64
           cache: pip
       - name: Install project and build dependencies
@@ -80,7 +80,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Build and validate packaged app
         run: bash scripts/build_macos.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: macos-x86_64
           path: dist-release/Labelme-JSON-Converter-macOS-x86_64.zip
@@ -92,10 +92,10 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           architecture: x64
           cache: pip
       - name: Install Linux GUI and archive dependencies
@@ -106,7 +106,7 @@ jobs:
         run: xvfb-run -a python -m unittest discover -s tests -v
       - name: Build and validate packaged binary
         run: bash scripts/build_linux.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux-x86_64
           path: dist-release/Labelme-JSON-Converter-Linux-x86_64.zip
@@ -118,13 +118,13 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.10"
+          python-version: "3.11"
       - name: Build clean source archive
         run: python scripts/build_source.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: source
           path: dist-release/Labelme-JSON-Converter-Source.zip
@@ -140,7 +140,7 @@ jobs:
       contents: write
     steps:
       - name: Download platform artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: release-assets
           merge-multiple: true
@@ -151,7 +151,7 @@ jobs:
           cd release-assets
           sha256sum *.zip | sort > SHA256SUMS.txt
       - name: Upload complete release bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Labelme-JSON-Converter-release-bundle
           path: release-assets/*

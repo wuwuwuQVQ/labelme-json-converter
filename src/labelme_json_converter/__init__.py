@@ -1,6 +1,6 @@
 """Labelme JSON Converter."""
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 from .converter import (
     BatchSummary,
@@ -17,4 +17,3 @@ __all__ = [
     "convert_document",
     "convert_path",
 ]
-

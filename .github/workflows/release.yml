@@ -1,0 +1,170 @@
+name: Build release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    name: Windows x86_64
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: x64
+          cache: pip
+      - name: Install project and build dependencies
+        run: python -m pip install --upgrade pip . -r requirements-build.txt
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Build and validate packaged EXE
+        shell: pwsh
+        run: ./scripts/build_windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-x86_64
+          path: dist-release/Labelme-JSON-Converter-Windows-x86_64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  macos-arm64:
+    name: macOS ARM64
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: arm64
+          cache: pip
+      - name: Install project and build dependencies
+        run: python -m pip install --upgrade pip . -r requirements-build.txt
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Build and validate packaged app
+        run: bash scripts/build_macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64
+          path: dist-release/Labelme-JSON-Converter-macOS-arm64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  macos-intel:
+    name: macOS x86_64
+    runs-on: macos-15-intel
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: x64
+          cache: pip
+      - name: Install project and build dependencies
+        run: python -m pip install --upgrade pip . -r requirements-build.txt
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Build and validate packaged app
+        run: bash scripts/build_macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-x86_64
+          path: dist-release/Labelme-JSON-Converter-macOS-x86_64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  linux:
+    name: Linux x86_64
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          architecture: x64
+          cache: pip
+      - name: Install Linux GUI and archive dependencies
+        run: sudo apt-get update && sudo apt-get install -y xvfb tk zip
+      - name: Install project and build dependencies
+        run: python -m pip install --upgrade pip . -r requirements-build.txt
+      - name: Run tests
+        run: xvfb-run -a python -m unittest discover -s tests -v
+      - name: Build and validate packaged binary
+        run: bash scripts/build_linux.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-x86_64
+          path: dist-release/Labelme-JSON-Converter-Linux-x86_64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  source:
+    name: Source archive
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Build clean source archive
+        run: python scripts/build_source.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source
+          path: dist-release/Labelme-JSON-Converter-Source.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  bundle:
+    name: Verify and bundle release
+    needs: [windows, macos-arm64, macos-intel, linux, source]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download platform artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Verify archives and generate checksums
+        run: |
+          set -eu
+          for archive in release-assets/*.zip; do unzip -t "$archive" >/dev/null; done
+          cd release-assets
+          sha256sum *.zip | sort > SHA256SUMS.txt
+      - name: Upload complete release bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Labelme-JSON-Converter-release-bundle
+          path: release-assets/*
+          if-no-files-found: error
+          retention-days: 14
+      - name: Create draft GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "${GITHUB_REF_NAME}"
+          release-assets/*.zip
+          release-assets/SHA256SUMS.txt
+          --draft
+          --generate-notes
+          --title "Labelme JSON Converter ${GITHUB_REF_NAME}"

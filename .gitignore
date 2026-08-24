@@ -1,0 +1,39 @@
+# Operating system and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Build and release output
+build/
+dist/
+dist-release/
+release/
+*.spec
+*.app/
+*.exe
+*.zip
+
+# Labelme data and medical images: never commit real data
+*.json
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.dcm
+!tests/fixtures/*.json
+

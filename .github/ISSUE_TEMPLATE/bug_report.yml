@@ -1,0 +1,49 @@
+name: Bug report
+description: 报告程序启动、界面或转换问题
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: checkboxes
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我确认不会上传真实患者影像、未脱敏 JSON、姓名、病历号或其他敏感信息。
+          required: true
+  - type: dropdown
+    id: system
+    attributes:
+      label: 操作系统
+      options:
+        - Windows 10/11
+        - macOS Apple Silicon
+        - macOS Intel
+        - Ubuntu/Linux x86_64
+    validations:
+      required: true
+  - type: input
+    id: architecture
+    attributes:
+      label: CPU 架构
+      placeholder: x86_64 / arm64
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 程序版本
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请说明点击了哪些按钮、选择了何种输入模式，以及发生了什么。
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: 已脱敏的转换报告或错误信息
+      description: 请删除路径中的姓名、机构名及其他敏感信息；不要附加原始 JSON 或图片。
+

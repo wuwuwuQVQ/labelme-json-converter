@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "labelme-json-converter"
+version = "1.0.0"
+description = "Convert Labelme JSON files to the Labelme 6.3.0 no-image-data format."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Labelme JSON Converter contributors" },
+]
+keywords = ["labelme", "json", "annotation", "converter", "tkinter"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: MacOS X",
+  "Environment :: Win32 (MS Windows)",
+  "Environment :: X11 Applications",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Graphics",
+]
+
+[project.urls]
+Homepage = "https://github.com/sos-is-really-helpless/labelme-json-converter"
+Issues = "https://github.com/sos-is-really-helpless/labelme-json-converter/issues"
+
+[project.scripts]
+labelme-json-converter = "labelme_json_converter.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

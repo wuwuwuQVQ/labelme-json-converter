@@ -2,6 +2,10 @@
 
 本项目遵循 [Semantic Versioning](https://semver.org/)。
 
+## [1.0.2] - 2026-08-25
+
+- 修复汇总任务未向 GitHub CLI 显式传入仓库名，导致草稿 Release 创建失败的问题。
+
 ## [1.0.1] - 2026-08-25
 
 - 将 GitHub Actions 构建 Python 升级到 3.11，修复 macOS Intel runner 的 Tkinter 测试兼容问题。

@@ -165,6 +165,7 @@ jobs:
           gh release create "${GITHUB_REF_NAME}"
           release-assets/*.zip
           release-assets/SHA256SUMS.txt
+          --repo "${GITHUB_REPOSITORY}"
           --draft
           --generate-notes
           --title "Labelme JSON Converter ${GITHUB_REF_NAME}"

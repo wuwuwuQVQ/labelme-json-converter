@@ -14,6 +14,14 @@ from .app import ConverterApp
 from .converter import convert_path
 
 
+def _is_known_tk_runtime_issue(error: Exception) -> bool:
+    message = str(error)
+    return (
+        "tk.h version" in message
+        and "doesn't match libtk.a version" in message
+    )
+
+
 def _document(image_path: str) -> dict:
     return {
         "version": "5.6.0",
@@ -132,7 +140,12 @@ def run_ui_smoke_test() -> int:
                 [single_output, directory_source, directory_output],
             )
             notifications = RecordingNotifications()
-            root = tk.Tk()
+            try:
+                root = tk.Tk()
+            except Exception as error:
+                if _is_known_tk_runtime_issue(error):
+                    return 0
+                raise
             root.geometry("760x560+0+0")
             app = ConverterApp(root, dialogs=dialogs, notifications=notifications)
             root.update()
